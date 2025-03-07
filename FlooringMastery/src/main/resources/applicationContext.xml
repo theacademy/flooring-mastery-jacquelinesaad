@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- User Input/Output Beans -->
+    <bean id="userIO" class="com.js.flooringmastery.ui.UserIOConsoleImpl"/>
+    <bean id="view" class="com.js.flooringmastery.ui.OrderView">
+        <constructor-arg ref="userIO"/>
+    </bean>
+
+    <!-- Data Access Layer (DAO) Beans -->
+    <bean id="orderDao" class="com.js.flooringmastery.dao.OrderDaoImpl">
+        <constructor-arg ref="taxDao"/>
+        <constructor-arg ref="productDao"/>
+    </bean>
+    <bean id="taxDao" class="com.js.flooringmastery.dao.TaxDaoImpl"/>
+    <bean id="productDao" class="com.js.flooringmastery.dao.ProductDaoImpl"/>
+
+    <!-- Service Layer Beans -->
+    <bean id="orderService" class="com.js.flooringmastery.service.OrderServiceImpl">
+        <constructor-arg ref="orderDao"/>
+        <constructor-arg ref="productDao"/>
+        <constructor-arg ref="taxDao"/>
+    </bean>
+
+    <!-- Controller Bean -->
+    <bean id="orderController" class="com.js.flooringmastery.controller.OrderController">
+        <constructor-arg ref="orderService"/>
+        <constructor-arg ref="view"/>
+    </bean>
+
+</beans>
